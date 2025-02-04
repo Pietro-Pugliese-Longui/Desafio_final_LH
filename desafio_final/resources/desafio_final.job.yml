@@ -1,0 +1,49 @@
+# The main job for desafio_final.
+resources:
+  jobs:
+    desafio_final_job:
+      name: desafio_final_job
+      
+      parameters:
+        - name: execution_date
+          default: "{{job.start_time[iso_date]}}"
+
+        - name: managed_location
+          default: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh
+
+      trigger:
+        # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
+        periodic:
+          interval: 1
+          unit: DAYS
+
+      email_notifications:
+        on_failure:
+          - pietro.longui@indicium.tech
+
+      tasks:
+        - task_key: extract_task
+          existing_cluster_id: 0114-120134-85ri2w59
+          notebook_task:
+            notebook_path: ../src/Extract.ipynb
+        
+        - task_key: transform_task
+          depends_on: 
+            - task_key: extract_task
+          existing_cluster_id: 0114-120134-85ri2w59
+          notebook_task:
+            notebook_path: ../src/Transform.ipynb
+
+  schemas:
+    raw_sales_schema:
+      catalog_name: pietro_longui_raw
+      name: sales_raw
+      managed_location: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh/sales_raw
+      comment: "schema for raw catalog"
+      
+    stg_sales_schema:
+      catalog_name: pietro_longui_stg
+      name: sales_stg
+      managed_location: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh/sales_stg
+      comment: "schema for stg catalog"            
+            

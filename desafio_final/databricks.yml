@@ -1,0 +1,31 @@
+# This is a Databricks asset bundle definition for desafio_final.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: desafio_final
+  uuid: 3257dd0c-2713-4ee2-8050-55a87db5b41c
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    # The default target uses 'mode: development' to create a development copy.
+    # - Deployed resources get prefixed with '[dev my_user_name]'
+    # - Any job schedules and triggers are paused by default.
+    # See also https://docs.databricks.com/dev-tools/bundles/deployment-modes.html.
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-1770141292543280.0.azuredatabricks.net
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-1770141292543280.0.azuredatabricks.net
+      # We explicitly specify /Workspace/Users/pietro.longui@indicium.tech to make sure we only have a single copy.
+      root_path: /Workspace/Users/pietro.longui@indicium.tech/.bundle/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: pietro.longui@indicium.tech
+        level: CAN_MANAGE
+    run_as:
+      user_name: pietro.longui@indicium.tech
