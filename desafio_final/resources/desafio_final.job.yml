@@ -4,13 +4,6 @@ resources:
     desafio_final_job:
       name: desafio_final_job
       
-      parameters:
-        - name: execution_date
-          default: "{{job.start_time[iso_date]}}"
-
-        - name: managed_location
-          default: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh
-
       trigger:
         # Run this job every day, exactly one day from the last run; see https://docs.databricks.com/api/workspace/jobs/create#trigger
         periodic:
@@ -38,12 +31,12 @@ resources:
     raw_sales_schema:
       catalog_name: pietro_longui_raw
       name: sales_raw
-      managed_location: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh/sales_raw
+      #managed_location: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh/sales_raw
       comment: "schema for raw catalog"
       
     stg_sales_schema:
       catalog_name: pietro_longui_stg
       name: sales_stg
-      managed_location: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh/sales_stg
+      #managed_location: abfss://ted-desafio-final-lh-data@indstadblake.dfs.core.windows.net/desafio_final_lh/sales_stg
       comment: "schema for stg catalog"            
             
